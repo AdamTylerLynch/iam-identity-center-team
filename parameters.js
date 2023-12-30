@@ -6,7 +6,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const { AWS_APP_ID, AWS_BRANCH, SSO_LOGIN, TEAM_ADMIN_GROUP, TEAM_AUDITOR_GROUP, TAGS, CLOUDTRAIL_AUDIT_LOGS, TEAM_ACCOUNT } = process.env;
+const { AWS_APP_ID, AWS_BRANCH, SSO_LOGIN, TEAM_ADMIN_GROUP, TEAM_AUDITOR_GROUP, TAGS, CLOUDTRAIL_AUDIT_LOGS, TEAM_ACCOUNT, ALLOW_MANAGEMENT_ACCESS } = process.env;
 
 async function update_auth_parameters() {
   console.log(`updating amplify config for branch "${AWS_BRANCH}"...`);
@@ -61,6 +61,22 @@ async function update_react_parameters() {
   fs.writeFileSync(
     reactParametersJsonPath,
     JSON.stringify(reactParametersJson, null, 4)
+  );
+}
+
+async function update_accounts_parameters() {
+  console.log(`updating teamgetaccounts lambda parameters"...`);
+
+  const accountsParametersJsonPath = path.resolve(
+    `./amplify/backend/function/teamgetAccounts/parameters.json`
+  );
+  const accountsParametersJson = require(accountsParametersJsonPath);
+
+  accountsParametersJson.allowManagementAccess = ALLOW_MANAGEMENT_ACCESS;
+
+  fs.writeFileSync(
+    accountsParametersJsonPath,
+    JSON.stringify(accountsParametersJson, null, 4)
   );
 }
 
@@ -151,6 +167,7 @@ async function update_cloudtrail_parameters() {
 
 update_auth_parameters();
 update_react_parameters();
+update_accounts_parameters();
 update_groups_parameters();
 update_router_parameters()
 update_tag_parameters();

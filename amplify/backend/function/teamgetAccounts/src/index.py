@@ -9,7 +9,7 @@ from botocore.exceptions import ClientError
 client = boto3.client('organizations')
 
 ACCOUNT_ID = os.environ['ACCOUNT_ID']
-
+ALLOW_MANAGEMENT_ACCESS = os.environ['ALLOW_MANAGEMENT_ACCESS'] if 'ALLOW_MANAGEMENT_ACCESS' in os.environ else 'false'
 
 def get_mgmt_account_id():
     org_client = boto3.client('organizations')
@@ -33,7 +33,7 @@ def handler(event, context):
         for page in paginator:
             for acct in page['Accounts']:
                 if not deployed_in_mgmt:
-                    if acct['Id'] != mgmt_account_id:
+                    if acct['Id'] != mgmt_account_id or (acct['Id'] == mgmt_account_id and ALLOW_MANAGEMENT_ACCESS == 'true'):
                         account.extend(
                             [{"name": acct['Name'], 'id':acct['Id']}])
                 else:

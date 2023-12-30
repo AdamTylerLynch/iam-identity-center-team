@@ -39,6 +39,7 @@ then
     teamAuditGroup="$TEAM_AUDITOR_GROUP" \
     tags="$TAGS" \
     teamAccount="$TEAM_ACCOUNT" \
+    allowManagementAccess="$ALLOW_MANAGEMENT_ACCESS" \
   --tags $TAGS \
   --no-fail-on-empty-changeset --capabilities CAPABILITY_NAMED_IAM
 else
@@ -49,6 +50,7 @@ else
     CloudTrailAuditLogs=$CLOUDTRAIL_AUDIT_LOGS \
     teamAdminGroup="$TEAM_ADMIN_GROUP" \
     teamAuditGroup="$TEAM_AUDITOR_GROUP" \
+    allowManagementAccess="$ALLOW_MANAGEMENT_ACCESS" \
     tags="$TAGS" \
     teamAccount="$TEAM_ACCOUNT" \
   --no-fail-on-empty-changeset --capabilities CAPABILITY_NAMED_IAM

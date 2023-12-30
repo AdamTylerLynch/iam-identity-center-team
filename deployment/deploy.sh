@@ -42,6 +42,7 @@ then
     teamAuditGroup="$TEAM_AUDITOR_GROUP" \
     tags="$TAGS" \
     teamAccount="$TEAM_ACCOUNT" \
+    allowManagementAccess="$ALLOW_MANAGEMENT_ACCESS" \
   --tags $TAGS \
   --no-fail-on-empty-changeset --capabilities CAPABILITY_NAMED_IAM
 else
@@ -54,5 +55,6 @@ else
     teamAuditGroup="$TEAM_AUDITOR_GROUP" \
     tags="$TAGS" \
     teamAccount="$TEAM_ACCOUNT" \
+    allowManagementAccess="$ALLOW_MANAGEMENT_ACCESS" \
   --no-fail-on-empty-changeset --capabilities CAPABILITY_NAMED_IAM
 fi
