@@ -1,4 +1,5 @@
 {
   "Login": "sso login URL",
-  "DeploymentType": "deployment type"
+  "DeploymentType": "deployment type",
+  "AllowManagementAccess": "allow management access"
 }

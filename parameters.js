@@ -49,9 +49,10 @@ async function update_react_parameters() {
   console.log("Team Account param:");
   console.log(TEAM_ACCOUNT);
   if (TEAM_ACCOUNT === undefined) {
-    reactParametersJson.DeploymentType = "management"
+    reactParametersJson.DeploymentType = "management";
   } else {
-    reactParametersJson.DeploymentType = "delegated"
+    reactParametersJson.DeploymentType = "delegated";
+    reactParametersJson.AllowManagementAccess = ALLOW_MANAGEMENT_ACCESS;
   };
 
   reactParametersJson.teamAdminGroup = TEAM_ADMIN_GROUP;
