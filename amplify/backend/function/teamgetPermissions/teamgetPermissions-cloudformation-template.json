@@ -15,6 +15,9 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "allowManagementAccess": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -72,6 +75,9 @@
             },
             "ACCOUNT_ID": {
               "Ref": "AWS::AccountId"
+            },
+            "ALLOW_MANAGEMENT_ACCESS": {
+              "Ref": "allowManagementAccess"
             }
           }
         },

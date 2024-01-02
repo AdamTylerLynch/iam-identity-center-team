@@ -97,6 +97,22 @@ async function update_groups_parameters() {
   );
 }
 
+async function update_permissions_parameters() {
+  console.log(`updating teamgetpermissions lambda parameters"...`);
+
+  const permissionsParametersJsonPath = path.resolve(
+    `./amplify/backend/function/teamgetPermissions/parameters.json`
+  );
+  const permissionsParametersJson = require(permissionsParametersJsonPath);
+
+  permissionsParametersJson.allowManagementAccess = ALLOW_MANAGEMENT_ACCESS;
+
+  fs.writeFileSync(
+    permissionsParametersJsonPath,
+    JSON.stringify(permissionsParametersJson, null, 4)
+  );
+}
+
 async function update_router_parameters() {
   console.log(`updating teamRouter lambda parameters"...`);
 
@@ -169,6 +185,7 @@ update_auth_parameters();
 update_react_parameters();
 update_accounts_parameters();
 update_groups_parameters();
+update_permissions_parameters();
 update_router_parameters()
 update_tag_parameters();
 update_cloudtrail_parameters();

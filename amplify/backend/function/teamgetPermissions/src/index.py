@@ -10,6 +10,7 @@ from botocore.exceptions import ClientError
 client = boto3.client('sso-admin')
 
 ACCOUNT_ID = os.environ['ACCOUNT_ID']
+ALLOW_MANAGEMENT_ACCESS = os.environ['ALLOW_MANAGEMENT_ACCESS'] if 'ALLOW_MANAGEMENT_ACCESS' in os.environ else 'false'
 
 
 def list_existing_sso_instances():
@@ -73,7 +74,7 @@ def handler(event, context):
         for page in paginator:
             for permission in page['PermissionSets']:
                 if not deployed_in_mgmt:
-                    if permission not in mgmt_ps:
+                    if permission not in mgmt_ps or (permission in mgmt_ps and ALLOW_MANAGEMENT_ACCESS == 'true'):
                         permissions.append(getPS(permission))
                 else:
                     permissions.append(getPS(permission))
