@@ -23,10 +23,16 @@ else
   export AWS_PROFILE=$TEAM_ACCOUNT_PROFILE
 fi
 
+if [ -z "$UPDATE_REPO" ]; then 
+  export REPO=$UPDATE_REPO
+else
+  export REPO=https://github.com/aws-samples/iam-identity-center-team.git
+fi
+
 git remote remove origin
 git remote add origin codecommit::$REGION://team-idc-app
-git remote add team https://github.com/aws-samples/iam-identity-center-team.git
-git pull team main
+git remote add upstream $REPO
+git pull upstream main
 
 if [[ ! -z "$TAGS" ]];
 then
@@ -57,4 +63,4 @@ else
 fi
 
 git push origin main
-git remote remove team
+git remote remove upstream

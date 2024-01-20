@@ -20,3 +20,4 @@ TEAM_AUDITOR_GROUP="team_auditor_group_name"
 TAGS="project=iam-identity-center-team environment=prod"
 CLOUDTRAIL_AUDIT_LOGS=read_write
 ALLOW_MANAGEMENT_ACCESS=false
+UPDATE_REPO=https://github.com/aws-samples/iam-identity-center-team.git
