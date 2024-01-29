@@ -19,4 +19,6 @@ TEAM_ADMIN_GROUP="team_admin_group_name"
 TEAM_AUDITOR_GROUP="team_auditor_group_name"
 TAGS="project=iam-identity-center-team environment=prod"
 CLOUDTRAIL_AUDIT_LOGS=read_write
+MANAGEMENT_ACCOUNT=$(aws organizations describe-organization --query 'Organization.MasterAccountId' --output text)
 ALLOW_MANAGEMENT_ACCESS=false
+UPDATE_REPO=

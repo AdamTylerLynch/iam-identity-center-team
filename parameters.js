@@ -6,7 +6,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const { AWS_APP_ID, AWS_BRANCH, SSO_LOGIN, TEAM_ADMIN_GROUP, TEAM_AUDITOR_GROUP, TAGS, CLOUDTRAIL_AUDIT_LOGS, TEAM_ACCOUNT, ALLOW_MANAGEMENT_ACCESS } = process.env;
+const { AWS_APP_ID, AWS_BRANCH, SSO_LOGIN, TEAM_ADMIN_GROUP, TEAM_AUDITOR_GROUP, TAGS, CLOUDTRAIL_AUDIT_LOGS, TEAM_ACCOUNT, MANAGEMENT_ACCOUNT, ALLOW_MANAGEMENT_ACCESS } = process.env;
 
 async function update_auth_parameters() {
   console.log(`updating amplify config for branch "${AWS_BRANCH}"...`);
@@ -78,6 +78,23 @@ async function update_accounts_parameters() {
   fs.writeFileSync(
     accountsParametersJsonPath,
     JSON.stringify(accountsParametersJson, null, 4)
+  );
+}
+
+async function update_step_functions_parameters() {
+  console.log(`updating stepfunctions parameters"...`);
+
+  const stepFunctionsParametersJsonPath = path.resolve(
+    `./amplify/backend/custom/stepfunctions/parameters.json`
+  );
+
+  const stepFunctionsParametersJson = require(stepFunctionsParametersJsonPath);
+
+  stepFunctionsParametersJson.credentialRoleArn = "arn:aws:iam::"+MANAGEMENT_ACCOUNT+":role/TEAMGrantRole";
+
+  fs.writeFileSync(
+    stepFunctionsParametersJsonPath,
+    JSON.stringify(stepFunctionsParametersJson, null, 4)
   );
 }
 
@@ -185,6 +202,7 @@ async function update_cloudtrail_parameters() {
 update_auth_parameters();
 update_react_parameters();
 update_accounts_parameters();
+update_step_functions_parameters();
 update_groups_parameters();
 update_permissions_parameters();
 update_router_parameters()

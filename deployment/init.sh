@@ -26,6 +26,8 @@ idc=`aws organizations list-delegated-administrators --service-principal sso.ama
 cloudtrail=`aws organizations list-delegated-administrators --service-principal cloudtrail.amazonaws.com --region $REGION --output json | jq -r '.DelegatedAdministrators[] | select(.Id=='\"$TEAM_ACCOUNT\"') | .Id'`
 accountManager=`aws organizations list-delegated-administrators --service-principal account.amazonaws.com --region $REGION --output json | jq -r '.DelegatedAdministrators[] | select(.Id=='\"$TEAM_ACCOUNT\"') | .Id'`
 serviceRole=`aws iam get-role --role-name AWSServiceRoleForCloudTrail --region $REGION `
+grantRole=`aws iam get-role --role-name TEAMGrantRole --region $REGION `
+
 
 # Enable trusted access for account management
 aws organizations enable-aws-service-access --service-principal account.amazonaws.com --region $REGION
@@ -75,4 +77,16 @@ aws organizations register-delegated-administrator \
     echo "$TEAM_ACCOUNT configured as delegated Admin for IAM IdC"
 else
     echo "$TEAM_ACCOUNT is already configured as delegated Admin for IAM IdC"
+fi
+
+# Enable StepFunction to assume role in Management Account for Create/DeleteAccountAssignment
+if [ -z "$grantRole" ]; then
+    # Create IAM policy named TEAMGrantRevoke
+    aws iam create-policy --policy-name TEAMGrantRevoke --policy-document file://grant-revoke-policy.json --region $REGION
+    # Get the ARN of the policy
+    POLICY_ARN=$(aws iam list-policies --query 'Policies[?PolicyName==`TEAMGrantRevoke`].Arn' --output text)
+    # Create the IAM role
+    aws iam create-role --role-name TEAMGrantRole --region $REGION
+    # Attach the policy to the role
+    aws iam attach-role-policy --role-name TEAMGrantRole --policy-arn $POLICY_ARN --region $REGION
 fi

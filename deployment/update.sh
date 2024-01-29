@@ -39,6 +39,7 @@ then
     teamAuditGroup="$TEAM_AUDITOR_GROUP" \
     tags="$TAGS" \
     teamAccount="$TEAM_ACCOUNT" \
+    managementAccount="$MANAGEMENT_ACCOUNT" \
     allowManagementAccess="$ALLOW_MANAGEMENT_ACCESS" \
   --tags $TAGS \
   --no-fail-on-empty-changeset --capabilities CAPABILITY_NAMED_IAM
@@ -50,11 +51,15 @@ else
     CloudTrailAuditLogs=$CLOUDTRAIL_AUDIT_LOGS \
     teamAdminGroup="$TEAM_ADMIN_GROUP" \
     teamAuditGroup="$TEAM_AUDITOR_GROUP" \
-    allowManagementAccess="$ALLOW_MANAGEMENT_ACCESS" \
     tags="$TAGS" \
     teamAccount="$TEAM_ACCOUNT" \
+    managementAccount="$MANAGEMENT_ACCOUNT" \
+    allowManagementAccess="$ALLOW_MANAGEMENT_ACCESS" \
   --no-fail-on-empty-changeset --capabilities CAPABILITY_NAMED_IAM
 fi
 
 git push origin main
 git remote remove team
+
+# Execute customizations script
+. "./customizations.sh"

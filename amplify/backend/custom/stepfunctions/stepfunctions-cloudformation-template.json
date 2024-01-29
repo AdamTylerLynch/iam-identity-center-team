@@ -4,6 +4,10 @@
     "env": {
       "Type": "String"
     },
+    "credentialRoleArn": {
+      "Type": "String",
+      "Description": "Input parameter describing Arn attribute for credentialRole resource"
+    },
     "functionteamStatusArn": {
       "Type": "String",
       "Description": "Input parameter describing Arn attribute for function/teamStatus resource"
@@ -84,7 +88,12 @@
               },
               "Resource": "arn:aws:states:::aws-sdk:ssoadmin:createAccountAssignment",
               "ResultPath": "$.grant",
-              "Type": "Task"
+              "Type": "Task",
+              "Credentials": {
+                "RoleArn": {
+                  "Ref": "credentialRoleArn"
+                }
+              }
             },
             "Notify Error": {
               "End": true,
@@ -148,7 +157,12 @@
                 "StateMachineArn.$": "$.revoke_sm"
               },
               "Resource": "arn:aws:states:::states:startExecution",
-              "Type": "Task"
+              "Type": "Task",
+              "Credentials": {
+                "RoleArn": {
+                  "Ref": "credentialRoleArn"
+                }
+              }
             },
             "Update Request Status - in progress": {
               "Next": "DynamoDB UpdateStartTime",

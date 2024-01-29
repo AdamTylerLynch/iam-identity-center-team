@@ -17,6 +17,8 @@ set -xe
 
 . "./parameters.sh"
 
+
+
 if [ -z "$TEAM_ACCOUNT" ]; then 
   export AWS_PROFILE=$ORG_MASTER_PROFILE
 else 
@@ -42,6 +44,7 @@ then
     teamAuditGroup="$TEAM_AUDITOR_GROUP" \
     tags="$TAGS" \
     teamAccount="$TEAM_ACCOUNT" \
+    managementAccount="$MANAGEMENT_ACCOUNT" \
     allowManagementAccess="$ALLOW_MANAGEMENT_ACCESS" \
   --tags $TAGS \
   --no-fail-on-empty-changeset --capabilities CAPABILITY_NAMED_IAM
@@ -55,6 +58,10 @@ else
     teamAuditGroup="$TEAM_AUDITOR_GROUP" \
     tags="$TAGS" \
     teamAccount="$TEAM_ACCOUNT" \
+    managementAccount="$MANAGEMENT_ACCOUNT" \
     allowManagementAccess="$ALLOW_MANAGEMENT_ACCESS" \
   --no-fail-on-empty-changeset --capabilities CAPABILITY_NAMED_IAM
 fi
+
+# Execute customizations script
+. "./customizations.sh"
